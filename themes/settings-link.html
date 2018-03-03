@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+    	<h3 class="panel-title">%PANEL-TITLE%</h3>
+    </div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+      
+                <div class="input-group">
+                	<div class="col-sm-12">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-link"></span></span>
+                        <input type="text" class="form-control add-link" placeholder="http://" value="%HREF%" data-type="url" data-id="%ID%">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                	<div class="col-sm-12">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-text-size"></span></span>
+                        <input type="text" class="form-control add-link" placeholder="Link Title" value="%TEXT%" data-type="text" data-id="%ID%">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                	<label for="color" class="col-sm-2 control-label">Link Color</label>
+                    <div class="col-sm-10">
+                    	<div class="input-group colorpicker-component">
+                            <input type="text" value="%COLOR%" class="form-control" data-id="%ID%" >
+                            <span class="input-group-addon"><i></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer text-right">
+   		<button id="remove-editor" class="btn btn-success" data-id="%ID%">Done</button>
+    </div>
+</div>

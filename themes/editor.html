@@ -1,0 +1,433 @@
+<style>
+    #img-editor{
+        display:block;
+        margin:0 auto;
+        width:100%;
+        max-width:600px;
+        min-height: 100px;
+        position:relative;
+        overflow:hidden;
+        z-index:0;
+        border:1px solid #000;
+    }
+    #img-editor:hover{
+        border:1px solid #000;
+    }
+    #img-editor img{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        z-index:0;
+    }
+    #image-editor-console{
+        list-style:none;
+        padding:0;
+        margin:0 auto;
+        width:100%;
+        max-width:600px;
+        color:#FFF;
+        background:#000;
+        z-index:150;
+    }
+    #image-editor-console>li{
+        margin:0;
+        padding:0;
+        display:inline-block;
+        padding:10px 2px;
+        position:relative;
+    }
+
+    #image-editor-console>li>.button{
+        position:relative;
+        padding:10px;
+        background:#222;
+        border: 1px solid #444;
+        color:#FFF;
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius:0;
+        -ms-border-radius:0;
+        -o-border-radius:0;
+        text-shadow:none;
+        -webkit-text-shadow:none;
+        z-index:0;
+        cursor: pointer
+    }
+    #image-editor-console>li>form.button{
+        overflow:hidden;
+        display: inline-flex;
+    }
+    #image-editor-console>li>form.button > input[type^="file"]{
+        width: 100%;
+        height: 500px;
+        position: absolute;
+        background: none;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer
+    }
+    #image-editor-console>li.separator{
+        background: #444;
+        width: 2px;
+        padding: 17px 0;
+        margin: 0px 5px -12px 5px;
+    }
+    #image-editor-console>li>.button .property{
+        position: absolute;
+        top: 35px;
+        left: -2px;
+        color: #333;
+        padding: 5px 32px 32px 5px;
+        z-index: 5;
+        width: 100%;
+        min-width: 250px;
+        max-width: 350px;
+        text-align: left;
+        display: none;
+        cursor: default;
+        font-family:Arial, Helvetica, sans-serif;
+
+    }
+    #image-editor-console>li>.button .property.active{
+        display:block;
+    }
+    #image-editor-console>li>.button:disabled .property
+    #image-editor-console>li>.button:disabled .property.active{
+        display:none;
+    }
+
+    #image-editor-console>li>.button .property-default{
+        top:38px;
+        padding:10px 10px 15px 10px;
+        background-color:#eee;
+        color:#333;
+        border:1px solid #ddd;
+    }
+
+    #image-editor-console>li>.button.active{
+        background-color:#111;
+        color:#999;
+    }
+    #image-editor-console>li>.button:disabled{
+        color:#555;
+        background-color:#222;
+    }
+
+    #layers{
+        list-style: none;
+        padding: 5px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+        color: #FFF;
+        background-color: #222;
+        z-index: 150;
+        overflow: auto;
+        overflow-y: hidden;
+        text-align: left;
+        display: flex;
+    }
+    #layers:empty{
+        display:none;
+    }
+    #layers > li{
+        margin: 0;
+        padding: 7px 0;
+        display: block;
+        position: relative;
+        background-color: #444;
+        border: 6px solid #444;
+        color: #FFF;
+        width: 65px;
+        height: 40px;
+        overflow: hidden;
+        cursor:pointer;
+        font-size:10px;
+        vertical-align:middle;
+    }
+    #layers > li > span {
+        display: block;
+        width: 9999px;
+    }
+    #layers > li+li{
+        margin-left:5px;
+    }
+    #layers > li:hover{
+        background-color:#777;
+        border: 6px solid #777;
+    }
+    #layers > li.active,
+    #layers > li.active:hover{
+        background-color:#3FA9F5;
+        border: 6px solid #3FA9F5;
+        cursor:default;
+    }
+
+    #img-editor .ruler{
+        background:#3FA9F5;
+        position:absolute;
+        z-index: 0;
+        display:none;
+    }
+    #img-editor .ruler-x{
+        left: -2000%;
+        right: -1000%;
+        bottom: -4px;
+        width: 99999px;
+        height: 1px;
+        box-shadow:  0 1px 1px 0px rgba(255,255,255,0.5), 1px 0 1px 0px rgba(0,0,0,0.5);
+        -webkit-box-shadow: 0 -1px 1px 0px rgba(255,255,255,0.5), 1px 0 1px 0px rgba(0,0,0,0.5);
+    }
+    #img-editor .ruler-y{
+        left: -4px;
+        top: -2000%;
+        bottom: -1000%;
+        height: 99999px;
+        width: 1px;
+        box-shadow: -1px 0 1px 0px rgba(255,255,255,0.5), 1px 0 1px 0px rgba(0,0,0,0.5);
+        -webkit-box-shadow: -1px 0 1px 0px rgba(255,255,255,0.5), 1px 0 1px 0px rgba(0,0,0,0.5);
+    }
+
+    #img-editor .text-editor{
+        text-align:left;
+        padding:5px;
+        position:absolute;
+        z-index:1;
+        border:3px dashed transparent;
+        cursor:pointer;
+    }
+    #img-editor .text-editor:hover{
+        border:3px dashed rgba(220,220,220,0.8);
+        z-index:100;
+    }
+    #img-editor .text-editor.active{
+        border:3px dashed #3FA9F5;
+        background:rgba(255,255,255,0.8);
+        cursor:pointer;
+        cursor: hand;
+        cursor: -webkit-grab;
+    }
+
+    #img-editor .text-editor.active .ruler{
+        display:block;
+    }
+
+    #img-editor .text-editor.ui-draggable-dragging,
+    #img-editor .text-editor.ui-draggable-dragging:hover,
+    #img-editor .text-editor.ui-draggable-dragging:active{
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+    }
+    #img-editor .text-editor .edit-text{
+        display:block;
+        width:100%;
+        height:100%;
+        overflow:hidden;
+    }
+    #img-editor .text-editor.active .edit-text{
+        text-shadow:  0px 0px 3px rgba(255,255,255,0.5),0px 0px 3px rgba(0,0,1,0.5);
+        -webkit-text-shadow:  0px 0px 3px rgba(255,255,255,0.5),0px 0px 3px rgba(0,0,1,0.5);
+    }
+    #img-editor .text-editor .edit-text:focus{
+        box-shadow:none !important;
+        border:none;
+        outline:0;
+    }
+
+    .ui-rotatable-handle {
+        height: 24px;
+        width: 24px;
+        position: absolute;
+        color: #fff;
+        border: 3px solid #3FA9F5;
+        background: #fff;
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        -ms-border-radius: 100px;
+        -o-border-radius: 100px;
+        display: none;
+        background-image: url(assets/img/cursor-rotate.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    #img-editor .text-editor .remove {
+        height: 18px;
+        width: 18px;
+        position: absolute;
+        color: #ff0000;
+        background: #fff;
+        border: 2px solid #3FA9F5;
+        border-radius: 100px;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        -ms-border-radius: 100px;
+        -o-border-radius: 100px;
+        top: -10px;
+        right: -10px;
+        text-align: center;
+        font-size: 7pt;
+        font-family: cursive, arial, geneva;
+        line-height: 14px;
+        padding: 0 1px 0 0px;
+        display: none;
+        z-index: 100;
+        cursor:pointer !important;
+    }
+
+    #img-editor .text-editor.active .ui-rotatable-handle,
+    #img-editor .text-editor.active .remove{
+        display:block;
+    }
+
+    .ui-rotatable-handle:hover{
+        cursor: url("assets/img/cursor-rotate.png"), auto;
+    }
+
+    .ui-rotatable-handle-active{
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+    }
+    .ui-rotatable-handle-active:hover,
+    .ui-rotatable-handle-active:active,
+    .ui-rotatable-handle-active:focus{
+        opacity:1;
+    }
+
+    .ui-rotatable-handle-se {
+        bottom: -16px;
+        left: -16px;
+    }
+
+    #rc-logo{
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        padding: 25px;
+    }
+
+</style>
+<div class="text-center" id="container">
+    <ul id="image-editor-console">
+        <!-- <li><form class="button glyphicon glyphicon-upload" title="Upload Image">
+            <input type="file" id="upload">
+        </form></li> -->
+
+ <!--       <li>
+            <button type="button" class="button glyphicon glyphicon-upload" id="upload-new-image" title="Upload Image">
+                <div class="property property-default">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="file" id="upload" class="form-control">
+                        </div>
+                        <div class="col-sm-12">
+                            <input type="text" id="embed" class="form-control" placeholder="...or embed from URL">
+                        </div>
+                    </div>
+                </div>
+            </button>
+        </li>
+        <li class="separator"></li>   -->
+        <li><button type="button" class="button glyphicon glyphicon-plus" id="new" title="New Element"></button></li>
+        <li><button type="button" class="button glyphicon glyphicon-floppy-save" id="save" title="Save"></button></li>
+        <li class="separator"></li>
+        <li><button type="button" class="button glyphicon glyphicon-bold reset" id="text-bold" title="Bold"></button></li>
+        <li><button type="button" class="button glyphicon glyphicon-italic reset" id="text-italic" title="Italic"></button></li>
+        <li>
+            <button type="button" class="button glyphicon glyphicon-text-size reset" id="text-size" title="Resize">
+                <div class="property property-default">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <select id="font-size" class="form-control">
+                                <option value="10pt">10pt</option>
+                                <option value="12pt">12pt</option>
+                                <option value="14pt">14pt</option>
+                                <option value="16pt">16pt</option>
+                                <option value="18pt">18pt</option>
+                                <option value="22pt">22pt</option>
+                                <option value="24pt">24pt</option>
+                                <option value="32pt">32pt</option>
+                                <option value="38pt">38pt</option>
+                                <option value="42pt">42pt</option>
+                                <option value="48pt">48pt</option>
+                                <option value="52pt">52pt</option>
+                                <option value="64pt">64pt</option>
+                                <option value="72pt">72pt</option>
+                                <option value="83pt">83pt</option>
+                                <option value="92pt">92pt</option>
+                                <option value="100pt">100pt</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="btn btn-default btn-block" id="uppercase"><span class="glyphicon glyphicon-text-size"></span></div>
+                        </div>
+                        <div class="col-xs-12">
+                        <br>
+                            <select id="font-family" class="form-control">
+                                <option value="Arial, Helvetica, sans-serif" style="font-family:Arial, Helvetica, sans-serif">Arial</option>
+                                <option value="'Arial Black', Gadget, sans-serif" style="font-family:'Arial Black', Gadget, sans-serif">Arial Black</option>
+                                <option value="'Courier New', Courier, monospace" style="font-family:'Courier New', Courier, monospace">Courier New</option>
+                                <option value="'Comic Sans MS', cursive" style="font-family:'Comic Sans MS', cursive">Comic Sans MS</option>
+                                <option value="Georgia, 'Times New Roman', Times, serif" style="font-family:Georgia, 'Times New Roman', Times, serif">Georgia</option>
+                                <option value="'Lucida Console', Monaco, monospace" style="font-family:'Lucida Console', Monaco, monospace">Lucida Console</option>
+                                <option value="'Lucida Sans Unicode', 'Lucida Grande', sans-serif" style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif">Lucida Sans Unicode</option>
+                                <option value="'MS Serif', 'New York', serif" style="font-family:'MS Serif', 'New York', serif">MS Serif</option>
+                                <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif" style="font-family:'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino Linotype</option>
+                                <option value="Tahoma, Geneva, sans-serif" style="font-family:Tahoma, Geneva, sans-serif">Tahoma</option>
+                                <option value="'Trebuchet MS', Arial, Helvetica, sans-serif" style="font-family:'Trebuchet MS', Arial, Helvetica, sans-serif">Trebuchet MS</option>
+                                <option value="'Times New Roman', Times, serif" style="font-family:'Times New Roman', Times, serif">Times New Roman</option>
+                                <option value="Verdana, Geneva, sans-serif" style="font-family:Verdana, Geneva, sans-serif">Verdana</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </button>
+        </li>
+        <li><button type="button" class="button glyphicon glyphicon-align-left reset" id="align-left"></button></li>
+        <li><button type="button" class="button glyphicon glyphicon-align-center reset" id="align-center"></button></li>
+        <li><button type="button" class="button glyphicon glyphicon-align-right reset" id="align-right"></button></li>
+        <li><button type="button" class="button glyphicon glyphicon-align-justify reset" id="align-justify"></button></li>
+        <li>
+            <button type="button" class="button glyphicon glyphicon-text-color reset" id="text-color">
+                <div class="property">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 text-left">
+                                <div class="input-group colorpicker-component">
+                                    <input type="text" value="#000000" class="form-control" data-type="background" >
+                                    <span class="input-group-addon"><i></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </button>
+        </li>
+        <li><button type="button" class="button glyphicon glyphicon glyphicon-text-background reset" id="text-background">
+            <div class="property">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12 text-left">
+                            <div class="input-group colorpicker-component">
+                                <input type="text" value="transparent" class="form-control" data-type="background" >
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </button></li>
+    </ul>
+    <div id="img-editor">
+        <img id="image-edit" src="">
+    </div>
+    <ul id="layers"></ul>
+</div>
+<div id="alerts"></div>
+<br>

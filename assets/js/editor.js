@@ -1748,15 +1748,21 @@
 	
 	// Update image
 	$(document).on('input change paste keyup','.add-image',$.debounce(350,function(e){
+		
 		var $this = $(this),
 			id = $this.attr('data-id'),
 			type = $(this).attr('data-type'),
 			value = $(this).val().trim();
+			
+		console.log(id, type, value);
 		
 		if(value == '' && type != 'alt')
 			value=null;
 
 		if(type == 'src' && $.isImg(value)){
+			
+			console.log('is image');
+			
             if($("#loadNewImg")) $("#loadNewImg").remove();
             $(this).parent().after('<span id="loadNewImg">Loading...</span>');
             

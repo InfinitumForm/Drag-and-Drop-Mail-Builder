@@ -130,7 +130,7 @@ $.isImage = function(string) {
 	
 	if(null === string || false === string)
 		return false;
-	return ((string.match(/\.(jpeg|jpg|gif|png|bmp|svg|tiff|jfif|exif|ppm|pgm|pbm|pnm|webp|hdr|hif|bpg|img|pam|tga|psd|psp|xcf|cpt|vicar)$/)!=null) ? true : false);
+	return ((string.match(/\.(jpeg|jpg|gif|png|bmp|svg|tiff|jfif|exif|ppm|pgm|pbm|pnm|webp|hdr|hif|bpg|img|pam|tga|psd|psp|xcf|cpt|vicar)/)!=null) ? true : false);
 };
 /*
 *	$.isVideo(string) - Check if string is video, return BOOLEAN true/false
@@ -140,7 +140,7 @@ $.isVideo = function(string) {
 	if(null === string || false === string)
 		return false;
 	
-	return ((string.match(/\.(webm|mkv|flv|vob|ogv|ogg|drc|gifv|mng|avi|mov|qt|wmv|yuv|rm(vb)?|mp[42evg]|mpeg|m4p|3g[p2]|f4[vapb]|asf)$/)!=null) ? true : false);
+	return ((string.match(/\.(webm|mkv|flv|vob|ogv|ogg|drc|gifv|mng|avi|mov|qt|wmv|yuv|rm(vb)?|mp[42evg]|mpeg|m4p|3g[p2]|f4[vapb]|asf)/)!=null) ? true : false);
 };
 /*
 *	$.isImg(string) - alias of $.isImage(string), return BOOLEAN true/false

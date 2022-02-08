@@ -3,7 +3,7 @@ This is plug and play drag and drop jQuery builder for mail templates. This edit
 
 You need just to download, configure URL path on line `156` and you are ready for rock.
 
-DEMO: http://creativform.com/mail-editor/
+DEMO: https://infinitumform.com/mail-editor/
 
 LINE 156 configuration
 ```
